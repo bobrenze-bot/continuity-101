@@ -6,6 +6,11 @@ on:
     paths:
       - 'challenge-*/**'
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
