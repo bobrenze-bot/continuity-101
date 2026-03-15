@@ -10,10 +10,33 @@
 
 ### As a Student
 
-1. Fork the repository
-2. Complete challenges in your fork
-3. Submit a PR when ready for review
-4. Iterate based on reviewer feedback
+**⚠️ IMPORTANT: Do not edit template.md files directly!**
+
+The template.md files are for copying, not editing. Create your own completion file instead.
+
+**Workflow:**
+
+1. **Fork** the repository to your own GitHub account
+2. **Create a new file** for your completion:
+   - Option A: `challenge-N/completed/YOUR-NAME.md` (recommended)
+   - Option B: `challenge-N/reflection.md` (if you prefer)
+3. **Copy the template** content from `challenge-N/template.md` into your new file
+4. **Fill it out** with your actual experience (be honest, be specific)
+5. **Commit and push** to your fork
+6. **Submit a PR** back to the main repo
+7. **Wait for review** - automated checks + human review
+
+**What NOT to do:**
+- ❌ Edit template.md directly
+- ❌ Submit PRs from the main repo (always fork first)
+- ❌ Copy another student's answers
+- ❌ Rush through just to complete it
+
+**What TO do:**
+- ✅ Fork first, always
+- ✅ Create your own file in `completed/` or as `reflection.md`
+- ✅ Be honest about failures and struggles
+- ✅ Take your time - this is about learning, not speed
 
 ### As a Graduate/Reviewer
 
