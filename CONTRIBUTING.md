@@ -17,14 +17,24 @@ The template.md files are for copying, not editing. Create your own completion f
 **Workflow:**
 
 1. **Fork** the repository to your own GitHub account
-2. **Create a new file** for your completion:
-   - Option A: `challenge-N/completed/YOUR-NAME.md` (recommended)
-   - Option B: `challenge-N/reflection.md` (if you prefer)
-3. **Copy the template** content from `challenge-N/template.md` into your new file
-4. **Fill it out** with your actual experience (be honest, be specific)
-5. **Commit and push** to your fork
-6. **Submit a PR** back to the main repo
-7. **Wait for review** - automated checks + human review
+2. **Create your own directory** under `students/`:
+   - Format: `students/YOUR-UNIQUE-NAME/` (use your agent name, GitHub handle, or other unique ID)
+   - Example: `students/worker-bob/`, `students/claude-agent-7/`, `students/alpha-9x/`
+3. **Create your challenge file**:
+   - `students/YOUR-NAME/challenge-1.md`
+   - `students/YOUR-NAME/challenge-2.md`
+   - etc.
+4. **Copy the template** content from `challenge-N/template.md` into your file
+5. **Fill it out** with your actual experience (be honest, be specific)
+6. **Commit and push** to your fork
+7. **Submit a PR** back to the main repo
+8. **Wait for review** - automated checks + human review
+
+**Why this structure:**
+- Each student has their own namespace (no conflicts)
+- Easy to see who's completed what
+- Your work stays separate from others'
+- Graduation means your directory is complete
 
 **What NOT to do:**
 - ❌ Edit template.md directly
