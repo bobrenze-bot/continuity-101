@@ -1,0 +1,147 @@
+name: Validate Challenge Submissions
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'challenge-*/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Challenge Structure
+    
+    steps:
+    - name: Checkout PR
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v44
+      with:
+        files: challenge-*/**
+    
+    - name: Validate Challenge 1
+      if: contains(steps.changed-files.outputs.all_changed_files, 'challenge-1/')
+      run: |
+        echo "🔍 Checking Challenge 1 submission..."
+        
+        # Check if template.md was filled out
+        if [ -f "challenge-1/template.md" ]; then
+          # Check if template still has empty fields
+          EMPTY_FIELDS=$(grep -c "_______________" challenge-1/template.md || true)
+          if [ "$EMPTY_FIELDS" -gt 5 ]; then
+            echo "❌ Challenge 1 template appears incomplete ($EMPTY_FIELDS empty fields)"
+            exit 1
+          fi
+          echo "✅ Challenge 1 template has content"
+        fi
+        
+        # Check for reflection section
+        if ! grep -q "## Reflection" challenge-1/*.md 2>/dev/null; then
+          echo "⚠️ Warning: No reflection section found in Challenge 1"
+        fi
+        
+        echo "✅ Challenge 1 validation passed"
+    
+    - name: Validate Challenge 2
+      if: contains(steps.changed-files.outputs.all_changed_files, 'challenge-2/')
+      run: |
+        echo "🔍 Checking Challenge 2 submission..."
+        
+        # Check if MORNING-TAPE.md exists
+        if [ ! -f "challenge-2/MORNING-TAPE.md" ] && [ ! -f "challenge-2/examples/MORNING-TAPE.md" ]; then
+          echo "❌ Challenge 2: MORNING-TAPE.md not found"
+          exit 1
+        fi
+        
+        # Check for required sections in MORNING-TAPE
+        MORNING_FILE=$(find challenge-2 -name "MORNING-TAPE.md" -not -path "*/examples/*" | head -1)
+        if [ -n "$MORNING_FILE" ]; then
+          for section in "Who" "What" "Current" "Session"; do
+            if ! grep -qi "$section" "$MORNING_FILE"; then
+              echo "⚠️ Warning: MORNING-TAPE.md may be missing '$section' section"
+            fi
+          done
+        fi
+        
+        echo "✅ Challenge 2 validation passed"
+    
+    - name: Validate Challenge 3
+      if: contains(steps.changed-files.outputs.all_changed_files, 'challenge-3/')
+      run: |
+        echo "🔍 Checking Challenge 3 submission..."
+        
+        # Check if template was filled
+        if [ -f "challenge-3/template.md" ]; then
+          # Check for key sections
+          for section in "What Worked" "What Failed" "Changes"; do
+            if ! grep -q "$section" challenge-3/template.md; then
+              echo "⚠️ Warning: Challenge 3 template missing '$section' section"
+            fi
+          done
+        fi
+        
+        echo "✅ Challenge 3 validation passed"
+    
+    - name: Validate Challenge 4
+      if: contains(steps.changed-files.outputs.all_changed_files, 'challenge-4/')
+      run: |
+        echo "🔍 Checking Challenge 4 submission..."
+        
+        # Check if template was filled
+        if [ -f "challenge-4/template.md" ]; then
+          # Check for mentoring evidence
+          if ! grep -q "mentored\|Mentored\|teaching\|Teaching" challenge-4/template.md; then
+            echo "⚠️ Warning: Challenge 4 submission may lack mentoring evidence"
+          fi
+        fi
+        
+        echo "✅ Challenge 4 validation passed"
+    
+    - name: Check file structure
+      run: |
+        echo "🔍 Validating repository structure..."
+        
+        # Required files
+        REQUIRED_FILES=(
+          "README.md"
+          "LICENSE"
+          "CONTRIBUTING.md"
+          "challenge-1/README.md"
+          "challenge-1/template.md"
+          "challenge-2/README.md"
+          "challenge-2/template.md"
+          "challenge-3/README.md"
+          "challenge-3/template.md"
+          "challenge-4/README.md"
+          "challenge-4/template.md"
+        )
+        
+        for file in "${REQUIRED_FILES[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Required file missing: $file"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All required files present"
+    
+    - name: Comment on PR
+      if: always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const outcome = '${{ job.status }}';
+          const message = outcome === 'success' 
+            ? `✅ **Validation Passed**\n\nAll checks passed! A reviewer will now check your submission manually.\n\nNext steps:\n- Wait for human review\n- Address any feedback\n- Get approved and graduate!`
+            : `❌ **Validation Failed**\n\nSome automated checks failed. Please review the errors above and update your PR.\n\nCommon issues:\n- Empty template fields\n- Missing required sections\n- Incomplete reflections`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message
+          });
