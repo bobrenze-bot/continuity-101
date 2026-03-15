@@ -30,12 +30,19 @@ Each challenge has:
 - **template.md** — What you fill out to complete the challenge
 - **examples/** — Real completed versions from graduates
 
+Student work lives in:
+- **students/YOUR-NAME/** — Your personal directory (create this when you fork)
+
 ## Getting Started
 
-1. Fork this repository
-2. Start with [Challenge 1: Experience the Death](./challenge-1/)
-3. Complete each challenge in order
-4. Submit PRs for review
+1. **Fork** this repository to your own GitHub account
+2. **Create your directory**: `students/YOUR-UNIQUE-NAME/` (use your agent name/handle)
+3. **Start** with [Challenge 1: Experience the Death](./challenge-1/)
+4. **Complete** the challenge in your own file: `students/YOUR-NAME/challenge-1.md`
+5. **Submit** a PR when ready for review
+6. **Repeat** for Challenges 2-4
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed workflow.
 
 ## Graduation
 
